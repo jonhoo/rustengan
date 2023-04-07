@@ -10,6 +10,24 @@ pub struct Message<Payload> {
     pub body: Body<Payload>,
 }
 
+impl<Payload> Message<Payload> {
+    pub fn into_reply(self, id: Option<&mut usize>) -> Self {
+        Self {
+            src: self.dst,
+            dst: self.src,
+            body: Body {
+                id: id.map(|id| {
+                    let mid = *id;
+                    *id += 1;
+                    mid
+                }),
+                in_reply_to: self.body.id,
+                payload: self.body.payload,
+            },
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Body<Payload> {
     #[serde(rename = "msg_id")]
