@@ -118,7 +118,7 @@ where
         },
     };
 
-    reply.send(&mut stdout).context("send init reply")?;
+    reply.send(&mut stdout).context("send response to init")?;
 
     drop(stdin);
     let jh = std::thread::spawn(move || {
