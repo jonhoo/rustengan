@@ -42,9 +42,7 @@ impl Node<(), Payload> for UniqueNode {
             Payload::Generate => {
                 let guid = format!("{}-{}", self.node, self.id);
                 reply.body.payload = Payload::GenerateOk { guid };
-                reply
-                    .send(output)
-                    .context("serialize response to generate")?;
+                reply.send(output).context("send response to generate")?;
             }
             Payload::GenerateOk { .. } => {}
         }

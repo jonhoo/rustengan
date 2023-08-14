@@ -34,7 +34,7 @@ impl Node<(), Payload> for EchoNode {
         match reply.body.payload {
             Payload::Echo { echo } => {
                 reply.body.payload = Payload::EchoOk { echo };
-                reply.send(output).context("serialize response to echo")?;
+                reply.send(output).context("send response to echo")?;
             }
             Payload::EchoOk { .. } => {}
         }
