@@ -34,9 +34,7 @@ impl Node<(), Payload> for EchoNode {
         match reply.body.payload {
             Payload::Echo { echo } => {
                 reply.body.payload = Payload::EchoOk { echo };
-                serde_json::to_writer(&mut *output, &reply)
-                    .context("serialize response to init")?;
-                output.write_all(b"\n").context("write trailing newline")?;
+                reply.send(output).context("serialize response to echo")?;
             }
             Payload::EchoOk { .. } => {}
         }
