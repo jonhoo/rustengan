@@ -42,9 +42,7 @@ impl Node<(), Payload> for UniqueNode {
             Payload::Generate => {
                 let guid = format!("{}-{}", self.node, self.id);
                 reply.body.payload = Payload::GenerateOk { guid };
-                serde_json::to_writer(&mut *output, &reply)
-                    .context("serialize response to generate")?;
-                output.write_all(b"\n").context("write trailing newline")?;
+                reply.send(output).context("send response to generate")?;
             }
             Payload::GenerateOk { .. } => {}
         }
